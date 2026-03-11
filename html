@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wear Zone – Fashion for Everyone</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Josefin+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #9A7A2E;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --gray: #888;
+    --light-gray: #F5F5F5;
+    --white: #FFFFFF;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Josefin Sans', sans-serif;
+    --font-body: 'Lato', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--white);
+    width: 90%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn .3s ease;
+  }
+  .modal.wide { max-width: 720px; }
+
+  @keyframes modalIn {
+    from { opacity:0; transform: translateY(30px) scale(.97); }
+    to   { opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-header {
+    background: var(--black);
+    padding: 28px 36px 20px;
+    position: relative;
+  }
+  .modal-header .logo-small {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .modal-header h2 {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 300;
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: none; border: none;
+    color: var(--gray); font-size: 1.6rem;
+    cursor: pointer; line-height: 1;
+    transition: color .2s;
+  }
+  .modal-close:hover { color: var(--gold); }
+
+  .modal-body { padding: 32px 36px 36px; }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: .72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 7px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    border: 1px solid #DDD;
+    padding: 13px 16px;
+    font-family: var(--font-body);
+    font-size: .95rem;
+    color: var(--black);
+    outline: none;
+    transition: border-color .2s;
+    background: #FAFAFA;
+    border-radius: 0;
+    appearance: none;
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold); background: #fff; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .btn-gold {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 15px;
+    font-family: var(--font-ui);
+    font-size: .8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-gold:active { transform: scale(.99); }
+
+  .modal-switch {
+    text-align: center;
+    margin-top: 20px;
+    font-size: .88rem;
+    color: var(--gray);
+  }
+  .modal-switch a {
+    color: var(--gold-dark);
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .modal-switch a:hover { text-decoration: underline; }
+
+  .section-divider {
+    display: flex; align-items: center; gap: 14px;
+    margin: 22px 0;
+  }
+  .section-divider span { flex:1; height:1px; background:#EEE; }
+  .section-divider p {
+    font-size:.78rem; letter-spacing:2px;
+    text-transform:uppercase; color:var(--gray);
+    font-family: var(--font-ui);
+  }
+
+  .vendor-steps {
+    display: flex; gap: 8px; margin-bottom: 28px;
+  }
+  .vendor-step {
+    flex: 1; text-align: center; position: relative;
+  }
+  .vendor-step::after {
+    content:''; position:absolute; top:16px; left:60%; width:80%;
+    height:2px; background:#EEE;
+  }
+  .vendor-step:last-child::after { display:none; }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #EEE; color: var(--gray);
+    font-family: var(--font-ui); font-size:.8rem;
+    display:inline-flex; align-items:center; justify-content:center;
+    margin-bottom:6px; font-weight:700;
+    transition: background .3s, color .3s;
+  }
+  .vendor-step.active .step-num { background: var(--gold); color: var(--black); }
+  .vendor-step.done .step-num { background: var(--black); color: var(--gold); }
+  .step-label {
+    font-family: var(--font-ui); font-size:.62rem;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--gray);
+    display:block;
+  }
+  .vendor-step.active .step-label { color: var(--gold-dark); }
+
+  .vendor-page { display:none; }
+  .vendor-page.active { display:block; }
+
+  .vendor-nav { display:flex; gap:12px; margin-top:24px; }
+  .btn-outline {
+    flex:1; background:none; border:2px solid var(--black);
+    color:var(--black); padding:13px;
+    font-family:var(--font-ui); font-size:.78rem;
+    letter-spacing:2.5px; text-transform:uppercase;
+    font-weight:700; cursor:pointer; transition: background .2s, color .2s;
+  }
+  .btn-outline:hover { background: var(--black); color:var(--white); }
+
+  
+  .topbar {
+    background: var(--black);
+    color: #999;
+    text-align: center;
+    padding: 8px;
+    font-family: var(--font-ui);
+    font-size: .7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .topbar span { color: var(--gold); }
+
+  
+  header {
+    background: var(--black);
+    padding: 18px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .logo {
+    text-align: center;
+    cursor: pointer;
+  }
+  .logo-icon {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -2px;
+  }
+  .logo-text {
+    font-family: var(--font-ui);
+    font-size: .72rem;
+    letter-spacing: 6px;
+    color: var(--white);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 2px;
+  }
+  .logo-sub {
+    font-family: var(--font-display);
+    font-size: .75rem;
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  nav {
+    display: flex;
+    gap: 0;
+  }
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: .75rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    transition: color .2s;
+    position: relative;
+    cursor: pointer;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 18px; right: 18px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform .25s;
+  }
+  nav a:hover { color: var(--gold); }
+  nav a:hover::after { transform: scaleX(1); }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .icon-btn {
+    background: none; border: none;
+    color: #ccc; font-size: 1.25rem;
+    cursor: pointer; padding: 8px;
+    transition: color .2s; position: relative;
+  }
+  .icon-btn:hover { color: var(--gold); }
+  .cart-badge {
+    position: absolute; top: 4px; right: 4px;
+    background: var(--gold); color: var(--black);
+    font-size: .55rem; font-weight: 700;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-ui);
+  }
+
+  .gold-nav {
+    background: linear-gradient(135deg, #8B6914, var(--gold), #8B6914);
+    padding: 0 5%;
+    display: flex;
+    gap: 0;
+  }
+  .gold-nav a {
+    color: var(--black);
+    font-family: var(--font-ui);
+    font-size: .72rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background .2s;
+    cursor: pointer;
+  }
+  .gold-nav a:hover { background: rgba(0,0,0,.15); }
+
+  
+  .hero {
+    position: relative;
+    height: 85vh;
+    min-height: 500px;
+    background: var(--black);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #0d0d0d 100%);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,.8) 30%, rgba(0,0,0,.3) 100%);
+  }
+  
+  .hero-figures {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; justify-content: flex-end;
+    overflow: hidden;
+  }
+  .hero-figure {
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(180deg, #1a1a1a 0%, #222 100%);
+    clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 0% 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12rem;
+    color: rgba(255,255,255,.03);
+    font-style: italic;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-ui);
+    font-size: .7rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    animation: fadeUp .8s .2s both;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    color: var(--white);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 12px;
+    animation: fadeUp .8s .35s both;
+  }
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+    display: block;
+  }
+  .hero-sub {
+    font-family: var(--font-body);
+    color: #aaa;
+    font-size: 1rem;
+    margin-bottom: 36px;
+    animation: fadeUp .8s .5s both;
+  }
+  .hero-buttons {
+    display: flex; gap: 16px;
+    animation: fadeUp .8s .65s both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 40px;
+    font-family: var(--font-ui);
+    font-size: .78rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,.4);
+    padding: 16px 40px;
+    font-family: var(--font-ui);
+    font-size: .78rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    position: absolute;
+    bottom: 40px; right: 5%;
+    display: flex; gap: 48px;
+    z-index: 2;
+    animation: fadeUp .8s .8s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--gold);
+    font-weight: 300;
+    display: block;
+  }
+  .stat-label {
+    font-family: var(--font-ui);
+    font-size: .6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  
+  section { padding: 80px 5%; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-ui);
+    font-size: .68rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--black);
+  }
+  .section-line {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 16px auto 0;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 32px;
+  }
+
+  .product-card {
+    background: var(--white);
+    border: 1px solid #F0F0F0;
+    transition: transform .3s, box-shadow .3s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+  }
+  .product-img {
+    width: 100%; aspect-ratio: 3/3.5;
+    background: var(--light-gray);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-img-inner {
+    font-size: 5rem;
+    transition: transform .4s;
+  }
+  .product-card:hover .product-img-inner { transform: scale(1.08); }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-ui);
+    font-size: .6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    font-weight: 700;
+  }
+  .product-info { padding: 20px; }
+  .product-name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--black);
+    margin-bottom: 6px;
+  }
+  .product-stars { color: var(--gold); font-size: .85rem; margin-bottom: 10px; }
+  .product-price {
+    font-family: var(--font-ui);
+    font-size: 1.1rem;
+    color: var(--black);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .product-price .old-price {
+    text-decoration: line-through;
+    color: #aaa;
+    font-size: .85rem;
+    margin-left: 8px;
+    font-weight: 400;
+  }
+  .btn-cart {
+    width: 100%;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 13px;
+    font-family: var(--font-ui);
+    font-size: .7rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-cart:hover { background: var(--gold); color: var(--black); }
+
+  
+  .collections { background: var(--black); }
+  .collections .section-title { color: var(--white); }
+  .collections .section-eyebrow { color: var(--gold); }
+  .collections .section-line { background: var(--gold); }
+
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .collection-card {
+    position: relative; aspect-ratio: 3/4;
+    overflow: hidden; cursor: pointer;
+  }
+  .collection-bg {
+    position: absolute; inset: 0;
+    transition: transform .5s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12rem;
+  }
+  .collection-bg.men { background: linear-gradient(135deg, #1a1a1a, #2d2d2d); }
+  .collection-bg.women { background: linear-gradient(135deg, #1c1410, #2d2018); }
+  .collection-bg.access { background: linear-gradient(135deg, #0f1420, #1a2035); }
+  .collection-bg.cosm { background: linear-gradient(135deg, #1a0f15, #2d1825); }
+
+  .collection-card:hover .collection-bg { transform: scale(1.06); }
+  .collection-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.2) 60%);
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 28px;
+    transition: background .3s;
+  }
+  .collection-card:hover .collection-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.4) 60%);
+  }
+  .collection-tag {
+    font-family: var(--font-ui);
+    font-size: .6rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .collection-name {
+    font-family: var(--font-display);
+    font-size: 1.8rem; color: var(--white);
+    font-weight: 300; margin-bottom: 12px;
+  }
+  .collection-link {
+    font-family: var(--font-ui);
+    font-size: .68rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+    text-decoration: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: gap .2s;
+  }
+  .collection-link:hover { gap: 14px; }
+
+  
+  .features-bar {
+    background: var(--light-gray);
+    padding: 50px 5%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+  }
+  .feature {
+    text-align: center;
+  }
+  .feature-icon {
+    font-size: 2.5rem; margin-bottom: 14px;
+    display: block;
+  }
+  .feature-title {
+    font-family: var(--font-ui);
+    font-size: .78rem; letter-spacing: 2.5px;
+    text-transform: uppercase; font-weight: 700;
+    color: var(--black); margin-bottom: 6px;
+  }
+  .feature-desc {
+    font-size: .85rem; color: var(--gray);
+    line-height: 1.5;
+  }
+
+  
+  .testimonials { background: var(--white); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+  }
+  .testimonial-card {
+    background: var(--light-gray);
+    padding: 32px;
+    position: relative;
+    border-top: 3px solid var(--gold);
+  }
+  .testimonial-quote {
+    font-size: 4rem;
+    color: var(--gold);
+    font-family: var(--font-display);
+    line-height: .5;
+    margin-bottom: 16px;
+    opacity: .4;
+  }
+  .testimonial-text {
+    font-size: .92rem;
+    line-height: 1.7;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-size: 1rem;
+  }
+  .testimonial-author {
+    font-family: var(--font-ui);
+    font-size: .7rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--black);
+    font-weight: 700;
+  }
+  .testimonial-stars { color: var(--gold); font-size: .85rem; margin-bottom: 4px; }
+
+  
+  .newsletter {
+    background: var(--black);
+    text-align: center;
+  }
+  .newsletter .section-title { color: var(--white); }
+  .newsletter-form {
+    display: flex;
+    max-width: 500px;
+    margin: 32px auto 0;
+    gap: 0;
+  }
+  .newsletter-form input {
+    flex: 1;
+    border: 1px solid #333;
+    background: #111;
+    color: var(--white);
+    padding: 15px 20px;
+    font-family: var(--font-body);
+    font-size: .95rem;
+    outline: none;
+  }
+  .newsletter-form input:focus { border-color: var(--gold); }
+  .newsletter-form button {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 15px 28px;
+    font-family: var(--font-ui);
+    font-size: .7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .newsletter-form button:hover { background: var(--gold-light); }
+
+  
+  footer {
+    background: var(--dark);
+    border-top: 1px solid #1e1e1e;
+  }
+  .footer-top {
+    padding: 70px 5% 50px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 50px;
+  }
+  .footer-brand .logo-icon { font-size: 1.8rem; }
+  .footer-brand p {
+    color: #666; font-size: .87rem;
+    line-height: 1.7; margin-top: 16px; margin-bottom: 24px;
+  }
+  .social-links { display: flex; gap: 12px; }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid #333;
+    display: flex; align-items: center; justify-content: center;
+    color: #888; text-decoration: none;
+    font-size: 1rem; cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+  .footer-col h4 {
+    font-family: var(--font-ui);
+    font-size: .68rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 20px; font-weight: 700;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: #666; text-decoration: none;
+    font-size: .87rem; cursor: pointer;
+    transition: color .2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 1px solid #1e1e1e;
+    padding: 20px 5%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-bottom p {
+    color: #444; font-size: .8rem;
+    font-family: var(--font-ui); letter-spacing: 1px;
+  }
+  .footer-bottom span { color: var(--gold); }
+
+  
+  .cart-sidebar {
+    position: fixed; top: 0; right: -420px;
+    width: 420px; max-width: 100vw;
+    height: 100vh; background: var(--white);
+    z-index: 9999; box-shadow: -20px 0 60px rgba(0,0,0,.2);
+    transition: right .35s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-sidebar.open { right: 0; }
+  .cart-sidebar-header {
+    background: var(--black); padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-sidebar-header h3 {
+    font-family: var(--font-display);
+    color: var(--white); font-size: 1.5rem; font-weight: 300;
+  }
+  .cart-items { flex:1; overflow-y:auto; padding: 24px 28px; }
+  .cart-item {
+    display: grid; grid-template-columns: 70px 1fr auto;
+    gap: 16px; align-items: center;
+    padding: 16px 0; border-bottom: 1px solid #EEE;
+  }
+  .cart-item-img {
+    width: 70px; height: 70px;
+    background: var(--light-gray);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .cart-item-name { font-family: var(--font-display); font-size: 1rem; }
+  .cart-item-price {
+    font-family: var(--font-ui); font-size: .95rem;
+    color: var(--gold-dark); font-weight: 700;
+  }
+  .cart-item-remove {
+    background: none; border: none; color: #CCC;
+    cursor: pointer; font-size: 1.1rem; transition: color .2s;
+  }
+  .cart-item-remove:hover { color: #e44; }
+  .cart-empty {
+    text-align: center; padding: 60px 20px; color: var(--gray);
+    font-family: var(--font-display); font-size: 1.1rem; font-style: italic;
+  }
+  .cart-footer {
+    padding: 24px 28px; border-top: 2px solid var(--black);
+  }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+  .cart-total span:first-child {
+    font-family: var(--font-ui); font-size: .72rem;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--gray);
+  }
+  .cart-total-price {
+    font-family: var(--font-display); font-size: 1.6rem; color: var(--black);
+  }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--black); color: var(--white);
+    padding: 14px 28px; font-family: var(--font-ui);
+    font-size: .78rem; letter-spacing: 2px; text-transform: uppercase;
+    z-index: 20000; transition: transform .3s ease;
+    border-left: 4px solid var(--gold);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .search-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--black); z-index: 9000;
+    padding: 20px 5%; display: none;
+    align-items: center; gap: 16px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .search-bar.active { display: flex; }
+  .search-bar input {
+    flex: 1; background: none; border: none;
+    color: var(--white); font-family: var(--font-display);
+    font-size: 1.5rem; outline: none;
+    font-style: italic;
+  }
+  .search-bar input::placeholder { color: #444; }
+  .search-bar-close {
+    background: none; border: none; color: var(--gray);
+    font-size: 1.5rem; cursor: pointer;
+  }
+
+  
+  @media(max-width:768px) {
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    nav { display: none; }
+    .hero-stats { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  .vendor-success {
+    text-align: center; padding: 30px;
+    display: none;
+  }
+  .vendor-success.active { display: block; }
+  .vendor-success .check {
+    font-size: 4rem; margin-bottom: 16px; display: block;
+  }
+  .vendor-success h3 {
+    font-family: var(--font-display);
+    font-size: 2rem; font-weight: 300; margin-bottom: 10px;
+  }
+  .vendor-success p { color: var(--gray); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="topbar">✦ Free shipping on orders over <span>$150</span> — Use code <span>WEARZONE</span> ✦</div>
+
+<header>
+  <div class="logo" onclick="scrollTop()">
+    <div class="logo-icon">WZ</div>
+    <span class="logo-text">Wear Zone</span>
+    <span class="logo-sub">Fashion for Everyone</span>
+  </div>
+
+  <nav>
+    <a onclick="filterProducts('all')">Men</a>
+    <a onclick="filterProducts('women')">Women</a>
+    <a onclick="filterProducts('accessories')">Accessories</a>
+    <a onclick="filterProducts('cosmetics')">Cosmetics</a>
+  </nav>
+
+  <div class="header-actions">
+    <button class="icon-btn" onclick="toggleSearch()" title="Search">🔍</button>
+    <button class="icon-btn" onclick="openModal('loginModal')" title="Account">👤</button>
+    <button class="icon-btn" onclick="toggleCart()" title="Cart" style="position:relative">
+      🛍️<span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="gold-nav">
+  <a onclick="filterProducts('all')">Men</a>
+  <a onclick="filterProducts('women')">Women</a>
+  <a onclick="filterProducts('accessories')">Accessories</a>
+  <a onclick="filterProducts('cosmetics')">Cosmetics</a>
+  <a onclick="openModal('vendorModal')">Become a Vendor</a>
+  <a onclick="openModal('registerModal')" style="margin-left:auto">Register</a>
+  <a onclick="openModal('loginModal')">Login</a>
+</div>
+
+<div class="search-bar" id="searchBar">
+  <input type="text" placeholder="Search for fashion…" id="searchInput" oninput="searchProducts()">
+  <button class="search-bar-close" onclick="toggleSearch()">✕</button>
+</div>
+
+<section class="hero" style="padding:0">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-figures">
+    <div class="hero-figure">Fashion</div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ New Collection 2025 ✦</p>
+    <h1 class="hero-title">
+      Fast Delivery &<br>
+      <em>Trusted Store</em>
+    </h1>
+    <p class="hero-sub">Luxury fashion for every occasion — delivered to your door</p>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+      <button class="btn-secondary" onclick="openModal('registerModal')">Join Us</button>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">12K+</span>
+      <span class="stat-label">Happy Clients</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">800+</span>
+      <span class="stat-label">Products</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">50+</span>
+      <span class="stat-label">Brands</span>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <div class="section-header">
+    <p class="section-eyebrow">Curated for You</p>
+    <h2 class="section-title">Featured Products</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="products-grid" id="productsGrid">
+    
+  </div>
+</section>
+
+<section class="collections">
+  <div class="section-header">
+    <p class="section-eyebrow">Explore the World of Style</p>
+    <h2 class="section-title">Featured Collections</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="collections-grid">
+    <div class="collection-card" onclick="filterProducts('all')">
+      <div class="collection-bg men">👔</div>
+      <div class="collection-overlay">
+        <span class="collection-tag">New Season</span>
+        <h3 class="collection-name">Men's Luxury</h3>
+        <span class="collection-link">Shop Collection →</span>
+      </div>
+    </div>
+    <div class="collection-card" onclick="filterProducts('women')">
+      <div class="collection-bg women">👗</div>
+      <div class="collection-overlay">
+        <span class="collection-tag">Trending</span>
+        <h3 class="collection-name">Women's Elegance</h3>
+        <span class="collection-link">Shop Collection →</span>
+      </div>
+    </div>
+    <div class="collection-card" onclick="filterProducts('accessories')">
+      <div class="collection-bg access">⌚</div>
+      <div class="collection-overlay">
+        <span class="collection-tag">Premium</span>
+        <h3 class="collection-name">Fine Accessories</h3>
+        <span class="collection-link">Shop Collection →</span>
+      </div>
+    </div>
+    <div class="collection-card" onclick="filterProducts('cosmetics')">
+      <div class="collection-bg cosm">💄</div>
+      <div class="collection-overlay">
+        <span class="collection-tag">Best Sellers</span>
+        <h3 class="collection-name">Premium Cosmetics</h3>
+        <span class="collection-link">Shop Collection →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="features-bar">
+  <div class="feature">
+    <span class="feature-icon">🚀</span>
+    <div class="feature-title">Fast Worldwide Delivery</div>
+    <div class="feature-desc">Express shipping to 50+ countries in 3–5 business days</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">🔒</span>
+    <div class="feature-title">Secure Payments</div>
+    <div class="feature-desc">256-bit SSL encryption on all transactions</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">🎧</span>
+    <div class="feature-title">24/7 Customer Support</div>
+    <div class="feature-desc">Our team is always here to help you</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">↩️</span>
+    <div class="feature-title">Easy Returns</div>
+    <div class="feature-desc">30-day hassle-free returns on all orders</div>
+  </div>
+</div>
+
+<section class="testimonials">
+  <div class="section-header">
+    <p class="section-eyebrow">What Our Customers Say</p>
+    <h2 class="section-title">Happy Customers</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-quote">"</div>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">Absolutely love my new handbag! The quality is incredible and delivery was faster than expected. Wear Zone is my go-to fashion store now.</p>
+      <div class="testimonial-author">— Mia Storm</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-quote">"</div>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">The men's luxury collection is stunning. I ordered a full outfit and received so many compliments. Premium quality at very reasonable prices.</p>
+      <div class="testimonial-author">— Loury Wesinono</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-quote">"</div>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">I've been a loyal customer for over a year. Their cosmetics range is exceptional and the customer support team resolved my query within minutes.</p>
+      <div class="testimonial-author">— Dode Tent</div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="section-header">
+    <p class="section-eyebrow">Stay in the Loop</p>
+    <h2 class="section-title">Join Our Newsletter</h2>
+    <div class="section-line"></div>
+  </div>
+  <p style="color:#666;margin-top:16px">Get exclusive offers, new arrivals and style inspiration delivered to your inbox.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="Your email address…">
+    <button onclick="showToast('Thanks for subscribing! 🎉')">Subscribe</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="font-family:var(--font-display);font-size:1.8rem;color:var(--gold);font-weight:600">WZ</div>
+      <p>Wear Zone is your premium fashion destination for men, women, accessories & cosmetics. Fashion for everyone, delivered worldwide.</p>
+      <div class="social-links">
+        <a class="social-link" title="Facebook">f</a>
+        <a class="social-link" title="Instagram">in</a>
+        <a class="social-link" title="YouTube">▶</a>
+        <a class="social-link" title="Twitter">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <ul>
+        <li><a>About</a></li>
+        <li><a>Blog</a></li>
+        <li><a>Secrets</a></li>
+        <li><a>Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Accessories</h4>
+      <ul>
+        <li><a>Search</a></li>
+        <li><a>Contact Us</a></li>
+        <li><a>Testimonials</a></li>
+        <li><a>Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <ul>
+        <li><a>Facebook</a></li>
+        <li><a>Instagram</a></li>
+        <li><a>YouTube</a></li>
+        <li><a onclick="openModal('vendorModal')">Become a Vendor</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Copyright © 2025 <span>Wear Zone</span> | All Rights Reserved</p>
+    <p style="color:#333">Powered with ♥ for fashion</p>
+  </div>
+</footer>
+
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-sidebar-header">
+    <h3>Your Cart</h3>
+    <button class="icon-btn" style="color:#ccc;font-size:1.3rem" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">Your cart is empty.<br>Start shopping above!</div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span class="cart-total-price" id="cartTotal">$0.00</span>
+    </div>
+    <button class="btn-gold" onclick="showToast('Checkout coming soon! 🛒')">Proceed to Checkout</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="logo-small">Wear Zone</span>
+      <h2>Welcome Back</h2>
+      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:20px">
+        <a style="color:var(--gold-dark);font-size:.83rem;cursor:pointer;font-family:var(--font-ui)">Forgot password?</a>
+      </div>
+      <button class="btn-gold" onclick="doLogin()">Sign In</button>
+      <div class="section-divider"><span></span><p>or</p><span></span></div>
+      <div class="modal-switch">Don't have an account? <a onclick="switchModal('loginModal','registerModal')">Create one</a></div>
+      <div class="modal-switch" style="margin-top:10px">Want to sell? <a onclick="switchModal('loginModal','vendorModal')">Become a Vendor</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="logo-small">Wear Zone</span>
+      <h2>Create Account</h2>
+      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" placeholder="Min 8 characters">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" placeholder="Repeat password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <input type="text" placeholder="123 Main St, City, Country">
+      </div>
+      <button class="btn-gold" onclick="doRegister()">Create My Account</button>
+      <div class="modal-switch">Already have an account? <a onclick="switchModal('registerModal','loginModal')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="vendorModal">
+  <div class="modal wide">
+    <div class="modal-header">
+      <span class="logo-small">Wear Zone — Partner Program</span>
+      <h2>Become a Vendor</h2>
+      <button class="modal-close" onclick="closeModal('vendorModal')">✕</button>
+    </div>
+    <div class="modal-body">
+
+      
+      <div class="vendor-steps" id="vendorSteps">
+        <div class="vendor-step active" id="step-indicator-1">
+          <div class="step-num">1</div>
+          <span class="step-label">Personal</span>
+        </div>
+        <div class="vendor-step" id="step-indicator-2">
+          <div class="step-num">2</div>
+          <span class="step-label">Store</span>
+        </div>
+        <div class="vendor-step" id="step-indicator-3">
+          <div class="step-num">3</div>
+          <span class="step-label">Banking</span>
+        </div>
+        <div class="vendor-step" id="step-indicator-4">
+          <div class="step-num">4</div>
+          <span class="step-label">Documents</span>
+        </div>
+      </div>
+
+      
+      <div class="vendor-page active" id="vendor-page-1">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" placeholder="Jane">
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" placeholder="vendor@business.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Personal Phone Number *</label>
+            <input type="tel" placeholder="+1 (555) 000-0000">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp / Business Contact</label>
+            <input type="tel" placeholder="+1 (555) 000-0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Home / Residential Address *</label>
+          <input type="text" placeholder="Full address including city, state, country">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date of Birth *</label>
+            <input type="date">
+          </div>
+          <div class="form-group">
+            <label>National ID / Passport Number *</label>
+            <input type="text" placeholder="ID Number">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Password *</label>
+            <input type="password" placeholder="Min 8 characters">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password *</label>
+            <input type="password" placeholder="Repeat password">
+          </div>
+        </div>
+        <div class="vendor-nav">
+          <button class="btn-gold" style="flex:1" onclick="vendorNext(2)">Next: Store Information →</button>
+        </div>
+      </div>
+
+      
+      <div class="vendor-page" id="vendor-page-2">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Store / Brand Name *</label>
+            <input type="text" placeholder="e.g. Luxe Boutique Co.">
+          </div>
+          <div class="form-group">
+            <label>Store Category *</label>
+            <select>
+              <option value="">Select a category</option>
+              <option>Men's Fashion</option>
+              <option>Women's Fashion</option>
+              <option>Accessories</option>
+              <option>Cosmetics & Beauty</option>
+              <option>Footwear</option>
+              <option>Kids Fashion</option>
+              <option>Multi-category</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Store Physical Address / Location *</label>
+          <input type="text" placeholder="Full store address, city, country">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Store Phone Number *</label>
+            <input type="tel" placeholder="+1 (555) 000-0000">
+          </div>
+          <div class="form-group">
+            <label>Business Email *</label>
+            <input type="email" placeholder="info@yourbrand.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Store Website / Social Media</label>
+          <input type="text" placeholder="https://yourbrand.com or @yourbrand">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Business Registration Number</label>
+            <input type="text" placeholder="e.g. BRN-12345678">
+          </div>
+          <div class="form-group">
+            <label>Tax / VAT Number</label>
+            <input type="text" placeholder="e.g. VAT-987654">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Store Description *</label>
+          <textarea placeholder="Tell us about your store, the products you sell, and what makes your brand unique…"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Years in Business</label>
+            <select>
+              <option>Less than 1 year</option>
+              <option>1–2 years</option>
+              <option>3–5 years</option>
+              <option>5–10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estimated Monthly Products</label>
+            <select>
+              <option>1–50 products</option>
+              <option>51–200 products</option>
+              <option>201–500 products</option>
+              <option>500+ products</option>
+            </select>
+          </div>
+        </div>
+        <div class="vendor-nav">
+          <button class="btn-outline" onclick="vendorPrev(1)">← Back</button>
+          <button class="btn-gold" style="flex:1" onclick="vendorNext(3)">Next: Banking Details →</button>
+        </div>
+      </div>
+
+      
+      <div class="vendor-page" id="vendor-page-3">
+        <div class="form-group">
+          <label>Bank Name *</label>
+          <input type="text" placeholder="e.g. Chase Bank, HSBC, Barclays">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Account Holder Name *</label>
+            <input type="text" placeholder="Name as on bank account">
+          </div>
+          <div class="form-group">
+            <label>Account Number *</label>
+            <input type="text" placeholder="••••••••••••••">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Routing / Sort Code *</label>
+            <input type="text" placeholder="e.g. 021000021">
+          </div>
+          <div class="form-group">
+            <label>SWIFT / BIC Code</label>
+            <input type="text" placeholder="e.g. CHASUS33">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>IBAN (International)</label>
+          <input type="text" placeholder="e.g. GB29NWBK60161331926819">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Payout Currency *</label>
+            <select>
+              <option>USD – US Dollar</option>
+              <option>EUR – Euro</option>
+              <option>GBP – British Pound</option>
+              <option>BDT – Bangladeshi Taka</option>
+              <option>AED – UAE Dirham</option>
+              <option>PKR – Pakistani Rupee</option>
+              <option>INR – Indian Rupee</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Payout Frequency *</label>
+            <select>
+              <option>Weekly</option>
+              <option>Bi-weekly</option>
+              <option>Monthly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>PayPal / Payoneer Email (optional)</label>
+          <input type="email" placeholder="Alternate payment email">
+        </div>
+        <div class="vendor-nav">
+          <button class="btn-outline" onclick="vendorPrev(2)">← Back</button>
+          <button class="btn-gold" style="flex:1" onclick="vendorNext(4)">Next: Documents →</button>
+        </div>
+      </div>
+
+      
+      <div class="vendor-page" id="vendor-page-4">
+        <div class="form-group">
+          <label>Upload National ID / Passport (front) *</label>
+          <input type="file" accept="image/*,.pdf">
+        </div>
+        <div class="form-group">
+          <label>Upload National ID (back)</label>
+          <input type="file" accept="image/*,.pdf">
+        </div>
+        <div class="form-group">
+          <label>Business Registration Certificate</label>
+          <input type="file" accept="image/*,.pdf">
+        </div>
+        <div class="form-group">
+          <label>Store / Shop Photo</label>
+          <input type="file" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label>Any Other Relevant Document</label>
+          <input type="file" accept="image/*,.pdf">
+        </div>
+        <div style="background:#FFFBF0;border:1px solid var(--gold);padding:16px;margin-bottom:20px">
+          <p style="font-size:.83rem;line-height:1.7;color:#555">
+            <strong style="font-family:var(--font-ui);letter-spacing:1px">Vendor Agreement:</strong><br>
+            By submitting this form, you agree to Wear Zone's Vendor Terms & Conditions, Commission Structure (10–15% per sale), Return & Refund Policy, and Content Guidelines. Your application will be reviewed within 3–5 business days. You will receive an email confirmation once approved.
+          </p>
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-start;gap:10px">
+          <input type="checkbox" id="vendorAgree" style="width:auto;margin-top:3px">
+          <label for="vendorAgree" style="text-transform:none;letter-spacing:0;font-size:.87rem;color:#555;line-height:1.5">
+            I agree to all Wear Zone Vendor Terms & Conditions and confirm that all information provided is accurate and true.
+          </label>
+        </div>
+        <div class="vendor-nav">
+          <button class="btn-outline" onclick="vendorPrev(3)">← Back</button>
+          <button class="btn-gold" style="flex:1" onclick="submitVendor()">Submit Application ✦</button>
+        </div>
+      </div>
+
+      
+      <div class="vendor-success" id="vendorSuccess">
+        <span class="check">✅</span>
+        <h3>Application Submitted!</h3>
+        <p>Thank you for applying to become a Wear Zone vendor.<br>Our team will review your application within <strong>3–5 business days</strong>.<br>You'll receive a confirmation email shortly.</p>
+        <button class="btn-gold" style="max-width:200px;margin:24px auto 0" onclick="closeModal('vendorModal')">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── PRODUCTS DATA ───
+const products = [
+  { id:1, name:"Men's Watch", category:"accessories", emoji:"⌚", price:15.90, oldPrice:25, stars:4, badge:"Sale" },
+  { id:2, name:"Women's Evening Gown", category:"women", emoji:"👗", price:25.00, oldPrice:null, stars:5, badge:"Popular" },
+  { id:3, name:"Leather Handbag", category:"accessories", emoji:"👜", price:17.80, oldPrice:30, stars:4, badge:"Sale" },
+  { id:4, name:"Premium Cosmetics", category:"cosmetics", emoji:"💄", price:37.80, oldPrice:50, stars:5, badge:"Hot" },
+  { id:5, name:"Men's Suit Jacket", category:"men", emoji:"🥼", price:89.00, oldPrice:130, stars:5, badge:"Premium" },
+  { id:6, name:"Women's Sunglasses", category:"women", emoji:"🕶️", price:22.50, oldPrice:null, stars:4, badge:null },
+  { id:7, name:"Gold Necklace", category:"accessories", emoji:"📿", price:45.00, oldPrice:70, stars:5, badge:"Limited" },
+  { id:8, name:"Luxury Perfume", category:"cosmetics", emoji:"🧴", price:55.00, oldPrice:80, stars:5, badge:"New" },
+];
+
+let cart = [];
+let currentFilter = 'all';
+
+function renderProducts(filter = 'all', query = '') {
+  const grid = document.getElementById('productsGrid');
+  let filtered = products;
+  if (filter !== 'all') filtered = filtered.filter(p => p.category === filter);
+  if (query) filtered = filtered.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+        <div class="product-img-inner">${p.emoji}</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-stars">${'★'.repeat(p.stars)}${'☆'.repeat(5-p.stars)}</div>
+        <div class="product-price">
+          $${p.price.toFixed(2)}
+          ${p.oldPrice ? `<span class="old-price">$${p.oldPrice.toFixed(2)}</span>` : ''}
+        </div>
+        <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>
+  `).join('') || `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--gray);font-family:var(--font-display);font-size:1.2rem;font-style:italic">No products found.</div>`;
+}
+
+function filterProducts(cat) {
+  currentFilter = cat;
+  renderProducts(cat, document.getElementById('searchInput')?.value || '');
+  document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+}
+
+function searchProducts() {
+  const q = document.getElementById('searchInput').value;
+  renderProducts(currentFilter, q);
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(x => x.id === id);
+  if (existing) existing.qty++;
+  else cart.push({ ...p, qty: 1 });
+  updateCart();
+  showToast(`${p.emoji} ${p.name} added to cart!`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCart();
+}
+
+function updateCart() {
+  const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  const count = cart.reduce((s, x) => s + x.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+
+  const items = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+  const footer = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    footer.style.display = 'none';
+    items.innerHTML = '<div class="cart-empty" id="cartEmpty">Your cart is empty.<br>Start shopping above!</div>';
+  } else {
+    footer.style.display = 'block';
+    items.innerHTML = cart.map(x => `
+      <div class="cart-item">
+        <div class="cart-item-img">${x.emoji}</div>
+        <div>
+          <div class="cart-item-name">${x.name}</div>
+          <div style="font-size:.8rem;color:#999;font-family:var(--font-ui)">Qty: ${x.qty}</div>
+          <div class="cart-item-price">$${(x.price * x.qty).toFixed(2)}</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${x.id})">🗑</button>
+      </div>
+    `).join('');
+  }
+}
+
+function toggleCart() {
+  document.getElementById('cartSidebar').classList.toggle('open');
+}
+
+// ─── MODALS ───
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+function switchModal(from, to) {
+  closeModal(from);
+  setTimeout(() => openModal(to), 200);
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) closeModal(el.id); });
+});
+
+// ─── VENDOR STEPS ───
+let currentVendorPage = 1;
+
+function vendorNext(page) {
+  document.getElementById('vendor-page-' + currentVendorPage).classList.remove('active');
+  document.getElementById('step-indicator-' + currentVendorPage).classList.remove('active');
+  document.getElementById('step-indicator-' + currentVendorPage).classList.add('done');
+  currentVendorPage = page;
+  document.getElementById('vendor-page-' + page).classList.add('active');
+  document.getElementById('step-indicator-' + page).classList.add('active');
+}
+
+function vendorPrev(page) {
+  document.getElementById('vendor-page-' + currentVendorPage).classList.remove('active');
+  document.getElementById('step-indicator-' + currentVendorPage).classList.remove('active');
+  document.getElementById('step-indicator-' + currentVendorPage).classList.remove('done');
+  currentVendorPage = page;
+  document.getElementById('vendor-page-' + page).classList.add('active');
+  document.getElementById('step-indicator-' + page).classList.add('active');
+  document.getElementById('step-indicator-' + page).classList.remove('done');
+}
+
+function submitVendor() {
+  if (!document.getElementById('vendorAgree').checked) {
+    showToast('Please agree to the Vendor Terms first.');
+    return;
+  }
+  document.getElementById('vendorSteps').style.display = 'none';
+  document.getElementById('vendor-page-4').classList.remove('active');
+  document.getElementById('vendorSuccess').classList.add('active');
+}
+
+// ─── AUTH ACTIONS ───
+function doLogin() {
+  showToast('Login successful! Welcome back 👋');
+  closeModal('loginModal');
+}
+
+function doRegister() {
+  showToast('Account created! Welcome to Wear Zone 🎉');
+  closeModal('registerModal');
+}
+
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── SEARCH ───
+function toggleSearch() {
+  document.getElementById('searchBar').classList.toggle('active');
+  if (document.getElementById('searchBar').classList.contains('active')) {
+    document.getElementById('searchInput').focus();
+  }
+}
+
+function scrollTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── INIT ───
+renderProducts();
+</script>
+</body>
+</html>
